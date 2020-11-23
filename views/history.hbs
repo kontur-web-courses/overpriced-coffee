@@ -1,0 +1,18 @@
+
+    <main>
+      <section class="cart__total">
+        <div>История заказов</div>
+      </section>
+      <ul class="coffee__list">
+        {{#each items}}
+        <li>
+          <header class="coffee__name">{{name}}</header>
+          <img src="{{image}}" alt="{{name}}">
+          <footer>{{count}} шт</footer>
+          <footer>{{pricePerOne}} ₽/шт</footer>
+          <footer>В сумме {{price}} ₽</footer>
+          </a>
+        </li>
+        {{/each}}
+      </ul>
+    </main>
