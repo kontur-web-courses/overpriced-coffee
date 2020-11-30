@@ -5,4 +5,5 @@ const defaultState = root.classList.contains("dark");
 themeSwitch.checked = defaultState;
 themeSwitch.addEventListener("click", () => {
   root.classList.toggle("dark");
+  fetch(`/theme?value=${root.classList.contains('dark')}`);
 });
