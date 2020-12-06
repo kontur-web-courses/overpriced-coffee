@@ -6,10 +6,9 @@ import cookieParser from 'cookie-parser';
 const rootDir = process.cwd();
 const port = 3000;
 const app = express();
+app.use(cookieParser());
 
-let cartItems = [];
-let totalPrice = 0;
-let items = [
+const items = [
     {
         name: 'Americano',
         image: '/static/img/americano.jpg',
@@ -21,13 +20,18 @@ let items = [
     { name: 'Latte-macchiato', image: '/static/img/latte-macchiato.jpg', price: 999 },
     { name: 'Latte', image: '/static/img/latte.jpg', price: 999 },
 ];
+
+const users = new Map();
+
 app.use('/static', express.static(path.join(rootDir, 'static')));
 
 app.get('/', (_, res) => {
     res.redirect('/menu');
 });
+
 // Выбираем в качестве движка шаблонов Handlebars
 app.set('view engine', 'hbs');
+
 // Настраиваем пути и дефолтный view
 app.engine(
     'hbs',
@@ -46,33 +50,61 @@ app.get('/', (_, res) => {
 app.get('/menu', (_, res) => {
     res.render('menu', {
         layout: 'default',
+        title: 'Menu',
         items,
     });
 });
 
 app.get('/buy/:name', (req, res) => {
     const selectedCoffe = items.find((item) => item.name === req.params.name);
-    cartItems.push(selectedCoffe);
-    totalPrice += selectedCoffe.price;
+    let currentUser = getCurrentUser(req);
+    currentUser.personalCartItems.push(selectedCoffe);
+    currentUser.personalTotalPrice += selectedCoffe.price;
     res.redirect('/menu');
 });
 
 app.get('/cart', (req, res) => {
     res.render('cart', {
+        title: 'Cart',
         layout: 'default',
-        items: cartItems,
-        totalPrice,
+        items: getCurrentUser(req).personalCartItems,
+        totalPrice: getCurrentUser(req).personalTotalPrice,
     });
 });
 
 app.post('/cart', (req, res) => {
-    cartItems = [];
-    totalPrice = 0;
+    let currentUser = getCurrentUser(req);
+    currentUser.personalCartItems = [];
+    currentUser.personalTotalPrice = 0;
     res.redirect('/cart');
 });
 
 app.get('/login', (req, res) => {
-    res.status(501).end();
+    let cookieName = req.cookies.currentUserName;
+    let name = 'Аноним';
+
+    if (req.query.username && req.query.username !== cookieName) {
+        name = req.query.username;
+        res.cookie('currentUserName', name);
+    } else if (cookieName) {
+        name = cookieName;
+    }
+    
+    if (!users.get(name) || name === 'Аноним') {
+        users.set(name, { personalCartItems: [], personalTotalPrice: 0 });
+    }
+    res.render('login', {
+        title: 'Login',
+        layout: 'default',
+        userName: name,
+    });
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
+
+function getCurrentUser(req) {
+    if (!req.cookies.currentUserName) {
+        return users.get('Аноним');
+    }
+    return users.get(req.cookies.currentUserName);
+}
