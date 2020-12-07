@@ -1,0 +1,17 @@
+<section class="orders-history">
+    <h2>Мои заказы</h2>
+    <ul class="orders-list">
+        {{#each items}}
+        <li>
+            Заказ на сумму {{total}} ₽
+            <ol>
+                {{#each order}}
+                <li>
+                    {{name}} - {{price}} ₽
+                </li>
+                {{/each}}
+            </ol>
+        </li>
+        {{/each}}
+    </ul>
+</section>
