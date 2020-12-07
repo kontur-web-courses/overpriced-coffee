@@ -16,7 +16,6 @@ const menu = [
   { name: "Latte-macchiato",  image: "/static/img/latte-macchiato.jpg", price: 999 },
   { name: "Latte",            image: "/static/img/latte.jpg",           price: 999 },
 ];
-let cart = [];
 
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
@@ -46,7 +45,8 @@ app.get("/menu", (_, res) => {
   });
 });
 
-app.get("/cart", (_, res) => {
+app.get("/cart", (req, res) => {
+  const cart = JSON.parse(req.cookies.cart || '[]');
   res.render("cart", {
     layout: "default",
     items: cart,
@@ -55,12 +55,12 @@ app.get("/cart", (_, res) => {
 
 app.get("/buy/:name", (req, res) => {
   const coffe = menu.find(menuItem => menuItem.name === req.params.name);
-  cart.push(coffe);
+  addToCart(req, res, coffe);
   res.redirect('/menu');
 });
 
 app.post("/cart", (req, res) => {
-  cart = [];
+  clearCart(res);
   res.redirect('/cart');
 });
 
@@ -75,5 +75,19 @@ app.get("/login", (req, res) => {
     username: username || DEFAULT_USERNAME
   });
 });
+
+function getCart(req) {
+  return JSON.parse(req.cookies.cart || '[]');
+}
+
+function addToCart(req, res, item) {
+  const cartList = getCart(req);
+  cartList.push(item);
+  res.cookie('cart', JSON.stringify(cartList));
+}
+
+function clearCart(res) {
+  res.cookie('cart', JSON.stringify([]));
+}
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
