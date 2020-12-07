@@ -42,6 +42,7 @@ app.get("/menu", (_, res) => {
   res.render("menu", {
     layout: "default",
     items: menu,
+    pageTitle: 'Меню',
   });
 });
 
@@ -50,6 +51,7 @@ app.get("/cart", (req, res) => {
   res.render("cart", {
     layout: "default",
     items: cart,
+    pageTitle: 'Корзина',
   });
 });
 
@@ -72,7 +74,8 @@ app.get("/login", (req, res) => {
   }
   res.render("login", {
     layout: "default",
-    username: username || DEFAULT_USERNAME
+    username: username || DEFAULT_USERNAME,
+    pageTitle: 'Личный кабинет',
   });
 });
 
