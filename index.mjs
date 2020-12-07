@@ -16,7 +16,7 @@ const menu = [
   { name: "Latte",            image: "/static/img/latte.jpg",           price: 999 },
 ];
 
-const cart = [];
+let cart = [];
 
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
@@ -58,12 +58,9 @@ app.get("/buy/:name", (req, res) => {
   res.redirect('/menu');
 });
 
-app.get("/cart", (req, res) => {
-  res.status(501).end();
-});
-
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  cart = [];
+  res.redirect('/cart');
 });
 
 app.get("/login", (req, res) => {
