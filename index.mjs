@@ -38,11 +38,12 @@ app.get("/", (_, res) => {
   res.redirect('/menu');
 });
 
-app.get("/menu", (_, res) => {
+app.get("/menu", (req, res) => {
   res.render("menu", {
     layout: "default",
     items: menu,
     pageTitle: 'Меню',
+    dark: getTheme(req),
   });
 });
 
@@ -52,6 +53,7 @@ app.get("/cart", (req, res) => {
     layout: "default",
     items: cart,
     pageTitle: 'Корзина',
+    dark: getTheme(req),
   });
 });
 
@@ -76,6 +78,7 @@ app.get("/login", (req, res) => {
     layout: "default",
     username: username || DEFAULT_USERNAME,
     pageTitle: 'Личный кабинет',
+    dark: getTheme(req),
   });
 });
 
@@ -91,6 +94,10 @@ function addToCart(req, res, item) {
 
 function clearCart(res) {
   res.cookie('cart', JSON.stringify([]));
+}
+
+function getTheme(req) {
+  return req.cookies.dark === 'true'
 }
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
