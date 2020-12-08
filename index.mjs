@@ -16,8 +16,8 @@ const products = [
   { name: "Latte", image: "/static/img/latte.jpg", price: 666 },
   { name: "Latte-macchiato", image: "/static/img/latte-macchiato.jpg", price: 555 },
 ];
-let cartProducts = [];
-let userName;
+let users = [];
+
 
 app.use('/static', express.static(path.join(rootDir, 'static')));
 
@@ -35,7 +35,6 @@ app.engine(
 );
 
 app.get("/", (_, res) => {
-  res.sendFile(path.join(rootDir, "/static/html/index.html"));
   res.redirect('/menu');
 });
 
@@ -47,26 +46,46 @@ app.get("/menu", (_, res) => {
 });
 
 app.get("/buy/:name", (req, res) => {
-  cartProducts.push(products.find( product => product.name === req.params.name));
+  let currentUser = req.cookies.username || 'Аноним';
+  let user = users.find(item => item.name = currentUser);
+  let product = products.find( product => product.name === req.params.name);
+  if (user) {
+    user.products.push(product);
+  } else {
+    users.push({name: currentUser, products: [product]})
+  }
   res.redirect('/menu');
 });
 
 app.get("/cart", (req, res) => {
+  let currentUser = req.cookies.username || 'Аноним';
+  let user = users.find(item => item.name === currentUser);
+  let products;
+  if (user) {
+     products = user.products;
+  } else {
+    products = [];
+  }
   res.render("cart", {
     layout: "default",
-    sum: cartProducts.reduce((sum, elem) => sum + elem.price, 0),
-    items: cartProducts,
+    sum: products.reduce((sum, elem) => sum + elem.price, 0),
+    items: products,
   });
 });
 
 app.post("/cart", (req, res) => {
-  cartProducts = [];
+  let currentUser = req.cookies.username || 'Аноним';
+  let user = users.find(item => item.name === currentUser);
+  if (user) {
+    user.products = [];
+  }
   res.redirect('/cart');
 });
 
 app.get("/login", (req, res) => {
   if (req.query.username) {
     res.cookie("username", req.query.username);
+    users = []
     res.redirect("/login");
   } else {
     let name = req.cookies.username || "Аноним";
