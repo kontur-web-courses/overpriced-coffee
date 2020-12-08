@@ -4,7 +4,7 @@
     </form>
 </section>
 {{#each cart}}
-    <div class="cart__total">Ваш предыдущий заказ №{{@index}}</div>
+    <div class="cart__total">Ваш предыдущий заказ №{{{addOne @index}}}</div>
     <ul class="coffee__list">
         {{#each this}}
             <li>

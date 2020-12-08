@@ -27,7 +27,10 @@ app.engine(
         defaultView: "default",
         layoutsDir: path.join(rootDir, "/views/layouts/"),
         partialsDir: path.join(rootDir, "/views/partials/"),
-    })
+        helpers: {
+            addOne: function (number) { return `${number + 1}`; },
+        }
+    }),
 );
 
 app.use(cookieParser());
