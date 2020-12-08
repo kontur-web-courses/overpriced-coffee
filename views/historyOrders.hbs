@@ -1,0 +1,18 @@
+<section class="cart__total">
+    <form class="form" method="post">
+        <input class="action" type="submit" value="очистить историю"/>
+    </form>
+</section>
+{{#each cart}}
+    <div class="cart__total">Ваш предыдущий заказ №{{@index}}</div>
+    <ul class="coffee__list">
+        {{#each this}}
+            <li>
+                <header class="coffee__name">{{name}}</header>
+                <img src="{{image}}" alt="{{name}}"/>
+                <footer>{{price}} ₽</footer>
+            </li>
+        {{/each}}
+    </ul>
+{{/each}}
+
