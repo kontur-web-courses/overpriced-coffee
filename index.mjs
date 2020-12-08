@@ -91,7 +91,7 @@ app.get("/login", (req, res) => {
     let name = req.cookies.username || "Аноним";
     res.render("login", {
       layout: "default",
-      username: name,
+      username: name.replace(/[^a-zа-яё ]/gi,''),
     });
 
   }
