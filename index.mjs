@@ -34,8 +34,7 @@ const products = [
         image: "/static/img/latte-macchiato.jpg",
         price: 999,
     },
-]
-// let cart = [];
+];
 
 const rootDir = process.cwd();
 const port = 3000;
@@ -73,8 +72,11 @@ app.get("/menu", (req, res) => {
 
 app.get("/buy/:name", (req, res) => {
     const cart = req.cookies.cart || [];
-    cart.push(req.params.name);
-    res.cookie('cart', cart);
+    const newCart = [
+        ...cart,
+        req.params.name,
+    ];
+    res.cookie('cart', newCart);
     res.redirect('/');
 });
 
@@ -91,8 +93,25 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-    res.cookie('cart', []);
-    res.redirect('/');
+    const cart = req.cookies.cart;
+    if (cart && cart.length > 0) {
+        const history = req.cookies.history || [];
+        const newHistory = [
+            ...history,
+            {
+                number: history.length + 1,
+                cart: cart.map(e => {
+                    return {
+                        name: e,
+                        price: products.find(el => el.name === e).price,
+                    }
+                }),
+            },
+        ];
+        res.cookie('history', newHistory);
+        res.cookie('cart', []);
+        res.redirect('/');
+    }
 });
 
 app.get("/login", (req, res) => {
@@ -106,24 +125,18 @@ app.get("/login", (req, res) => {
     });
 });
 
+// Такие объемные данные лучше хранить в бд, а не в куки, ведь они ограничены всего в несколько кб (Chrome - 4кб).
+// Поэтому слишком большая история храниться не будет.
+// Но в рамках учебной задачи и так сойдет.
+
 app.get("/history", (req, res) => {
+    const rHistory = req.cookies.history && req.cookies.history.reverse() || [];
     res.render('history', {
         layout: 'default',
         title: 'История',
         isDarkTheme: (req.cookies.dark_theme === 'true' ?? false) ? 'checked' : '',
-        history: [
-            {
-                number: 1,
-                cart: [
-                    {
-                        name: 'Americano',
-                        price: 999,
-                    }
-                ],
-            }
-        ],
+        history: rHistory,
     });
-    // res.status(501).end();
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
