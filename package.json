@@ -1,5 +1,5 @@
 {
-  "name": "10.overpriced-coffee",
+  "name": "overpriced-coffee",
   "scripts": {
     "start": "better-npm-run start",
     "debug": "better-npm-run debug"
