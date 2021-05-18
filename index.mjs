@@ -60,7 +60,7 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  res.render('cart', {})
 });
 
 app.get("/login", (req, res) => {
