@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 const rootDir = process.cwd();
 const port = 3000;
 const app = express();
+let card = [];
 
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
@@ -52,7 +53,9 @@ app.get("/menu", (_, res) => {
 });
 
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+  card.push(req.params.name);
+  console.log(card);
+  res.redirect('/menu');
 });
 
 app.get("/cart", (req, res) => {
@@ -80,12 +83,10 @@ app.get("/cart", (req, res) => {
   })
 });
 
-app.post("/cart", (req, res) => {
-  res.render('cart', {})
-});
 
 app.get("/login", (req, res) => {
   res.status(501).end();
 });
+
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
