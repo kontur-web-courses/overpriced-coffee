@@ -52,12 +52,27 @@ app.get("/menu", (_, res) => {
   });
 });
 
+let totalPrice = 0;
+let americanoCount = 0;
+let cappuccinoCount = 0;
+
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+  let item = req.url.replace("/buy/", "");
+  if (item == "Americano"){
+    americanoCount+=1;
+  } else if (item == "Cappuccino"){
+    cappuccinoCount+=1;
+  }
+  res.redirect("/menu")
 });
 
 app.get("/cart", (req, res) => {
-  res.render("cart", {layout: false});
+  res.render("cart", {
+    totalPrice: 999*(americanoCount+cappuccinoCount),
+    americanoCount: americanoCount,
+    cappuccinoCount: cappuccinoCount,
+    layout: false,
+  })
 });
 
 app.post("/cart", (req, res) => {

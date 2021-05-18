@@ -21,7 +21,7 @@
 </header>
 <main>
     <section class="cart__total">
-        <div>Итого к оплате: 999999 ₽</div>
+        <div>Итого к оплате: {{totalPrice}} ₽</div>
         <form class="form" method="post">
             <input class="action" type="submit" value="оплатить" />
         </form>
@@ -29,13 +29,14 @@
     <ul class="coffee__list">
         <li>
             <header class="coffee__name">Americano</header>
+
             <img src="/img/americano.jpg" alt="Americano" />
-            <footer>999 ₽</footer>
+            <footer>{{americanoCount}} x 999 ₽</footer>
         </li>
         <li>
             <header class="coffee__name">Cappuccino</header>
             <img src="/img/cappuccino.jpg" alt="Cappuccino" />
-            <footer>999 ₽</footer>
+            <footer>{{cappuccinoCount}} x 999 ₽</footer>
         </li>
     </ul>
 </main>
