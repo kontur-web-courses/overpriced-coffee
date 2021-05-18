@@ -52,7 +52,6 @@ app.get("/menu", (_, res) => {
   });
 });
 
-let totalPrice = 0;
 let americanoCount = 0;
 let cappuccinoCount = 0;
 let latteCount = 0;
@@ -69,7 +68,7 @@ app.get("/buy/:name", (req, res) => {
   } else if (item === "Espresso") {
     espressoCount += 1;
   }
-  res.redirect("/menu")
+  res.redirect("/menu");
 });
 
 app.get("/cart", (req, res) => {
@@ -104,7 +103,11 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  americanoCount = 0;
+  cappuccinoCount = 0;
+  latteCount = 0;
+  espressoCount = 0;
+  res.redirect("/menu");
 });
 
 app.get("/login", (req, res) => {
