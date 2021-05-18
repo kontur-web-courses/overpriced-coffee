@@ -60,13 +60,13 @@ let espressoCount = 0;
 
 app.get("/buy/:name", (req, res) => {
   let item = req.url.replace("/buy/", "");
-  if (item == "Americano"){
+  if (item === "Americano"){
     americanoCount+=1;
-  } else if (item == "Cappuccino"){
+  } else if (item === "Cappuccino"){
     cappuccinoCount+=1;
-  } else if (item == "Latte"){
+  } else if (item === "Latte"){
     latteCount+=1
-  } else if (item == "Espresso") {
+  } else if (item === "Espresso") {
     espressoCount += 1;
   }
   res.redirect("/menu")
@@ -79,7 +79,7 @@ app.get("/cart", (req, res) => {
     cappuccinoCount: cappuccinoCount,
     latteCount: latteCount,
     espressoCount: espressoCount,
-    layout: false,
+    layout: "default",
   })
 });
 
@@ -88,7 +88,7 @@ app.post("/cart", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.render("login", {layout: false});
+  res.render("login", {layout: "default"});
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
