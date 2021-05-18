@@ -9,6 +9,7 @@ const app = express();
 
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
+app.use('/static', express.static('static'));
 // Настраиваем пути и дефолтный view
 app.engine(
   "hbs",
@@ -21,6 +22,7 @@ app.engine(
 );
 
 app.get("/", (_, res) => {
+  res.redirect("/menu");
   res.sendFile(path.join(rootDir, "/static/html/index.html"));
 });
 
