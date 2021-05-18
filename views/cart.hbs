@@ -1,0 +1,18 @@
+<ul class="coffee__list">
+    {{#each items}}
+        <li>
+            <header class="coffee__name">{{name}}</header>
+            <img src="{{image}}" alt="{{name}}">
+            <a href="/buy/{{name}}" class="link action">
+                {{price}} ₽
+            </a>
+        </li>
+    {{/each}}
+</ul>
+
+<section class="cart__total">
+    <div>Итого к оплате: {{amount}} ₽</div>
+    <form class="form" method="post">
+        <input class="action" type="submit" value="оплатить" />
+    </form>
+</section>
