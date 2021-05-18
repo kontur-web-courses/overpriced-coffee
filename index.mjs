@@ -21,7 +21,8 @@ app.engine(
 );
 
 app.get("/", (_, res) => {
-  res.sendFile(path.join(rootDir, "/static/html/index.html"));
+  res.redirect('/menu');
+  //res.sendFile(path.join(rootDir, "/static/html/index.html"));
 });
 
 app.get("/menu", (_, res) => {
