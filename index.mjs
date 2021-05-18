@@ -20,8 +20,10 @@ app.engine(
   })
 );
 
+app.use(express.static('static'));
+
 app.get("/", (_, res) => {
-  res.sendFile(path.join(rootDir, "/static/html/index.html"));
+  res.redirect("/menu");
 });
 
 app.get("/menu", (_, res) => {
@@ -30,10 +32,10 @@ app.get("/menu", (_, res) => {
     items: [
       {
         name: "Americano",
-        image: "/static/img/americano.jpg",
+        image: "/img/americano.jpg",
         price: 999,
       },
-      { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
+      { name: "Cappuccino", image: "/img/cappuccino.jpg", price: 999 },
     ],
   });
 });
