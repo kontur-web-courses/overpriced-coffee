@@ -47,13 +47,13 @@ app.use('/static', express.static('static'));
 app.set("view engine", "hbs");
 // Настраиваем пути и дефолтный view
 app.engine(
-  "hbs",
-  hbs({
-    extname: "hbs",
-    defaultView: "default",
-    layoutsDir: path.join(rootDir, "/views/layouts/"),
-    partialsDir: path.join(rootDir, "/views/partials/"),
-  })
+    "hbs",
+    hbs({
+        extname: "hbs",
+        defaultView: "default",
+        layoutsDir: path.join(rootDir, "/views/layouts/"),
+        partialsDir: path.join(rootDir, "/views/partials/"),
+    })
 );
 
 app.get("/", (_, res) => {
@@ -70,7 +70,16 @@ app.get("/menu", (_, res) => {
 let ordersForUsername = {}
 
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+    const username = req.cookies.username;
+    if (username) {
+        if (!(username in ordersForUsername))
+            ordersForUsername[username] = []
+        ordersForUsername[username].push(req.params.name);
+        res.redirect("/menu");
+    }
+    else {
+        res.redirect('/login');
+    }
 });
 
 app.get("/cart", (req, res) => {
@@ -101,11 +110,19 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+    const username = req.cookies.username;
+    ordersForUsername[username] = [];
+    res.redirect("/menu");
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
-});
+    res.render('login', {
+        layout: "default",
+        username: req.query.username || req.cookies.username || "Аноним"
+    });
+    res.cookie('username', req.query.username || req.cookies.username);
+})
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
+
+
