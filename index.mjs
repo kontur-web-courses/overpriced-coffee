@@ -48,7 +48,10 @@ app.get("/buy/:name", (req, res) => {
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  res.render("cart", {
+    layout: "default"
+  });
+  //res.status(501).end();
 });
 
 app.post("/cart", (req, res) => {
