@@ -37,33 +37,7 @@ app.get("/menu", (_, res) => {
       { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
       { name: "Flat-white", image: "/static/img/flat-white.jpg", price: 999 },
       { name: "Espresso", image: "/static/img/espresso.jpg", price: 999 },
-    ],
-  });
-});
-
-app.get("/menu", (_, res) => {
-  res.render("menu", {
-    layout: "default",
-    items: [
-      {
-        name: "latte-macchiato",
-        image: "/static/img/latte-macchiato.jpg",
-        price: 666,
-      },
-      { name: "latte-macchiato", image: "/static/img/latte-macchiato.jpg", price: 666 },
-    ],
-  });
-});
-
-app.get("/menu", (_, res) => {
-  res.render("menu", {
-    layout: "default",
-    items: [
-      {
-        name: "latte-macchiato",
-        image: "/static/img/latte-macchiato.jpg",
-        price: 636,
-      },
+      { name: "latte-macchiato", image: "/static/img/latte-macchiato.jpg", price: 636},
       { name: "latte", image: "/static/img/latte.jpg", price: 636 },
     ],
   });
