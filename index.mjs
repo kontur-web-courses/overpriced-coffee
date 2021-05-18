@@ -75,10 +75,30 @@ app.get("/buy/:name", (req, res) => {
 app.get("/cart", (req, res) => {
   res.render("cart", {
     totalPrice: 999*americanoCount+888*cappuccinoCount+777*latteCount+666*espressoCount,
-    americanoCount: americanoCount,
-    cappuccinoCount: cappuccinoCount,
-    latteCount: latteCount,
-    espressoCount: espressoCount,
+    items: [
+      {
+        name: "Americano",
+        image: "/img/americano.jpg",
+        price: 999,
+        count: americanoCount,
+      },
+      { name: "Cappuccino",
+        image: "/img/cappuccino.jpg",
+        price: 888,
+        count: cappuccinoCount,
+      },
+      {
+        name: "Latte",
+        image: "/img/latte.jpg",
+        price: 777,
+        count: latteCount,
+      },
+      { name: "Espresso",
+        image: "/img/espresso.jpg",
+        price: 666,
+        count: americanoCount,
+      },
+    ],
     layout: "default",
   })
 });

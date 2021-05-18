@@ -5,25 +5,11 @@
     </form>
 </section>
 <ul class="coffee__list">
-    <li>
-        <header class="coffee__name">Americano</header>
-
-        <img src="/img/americano.jpg" alt="Americano" />
-        <footer>{{americanoCount}} x 999 ₽</footer>
-    </li>
-    <li>
-        <header class="coffee__name">Cappuccino</header>
-        <img src="/img/cappuccino.jpg" alt="Cappuccino" />
-        <footer>{{cappuccinoCount}} x 888 ₽</footer>
-    </li>
-    <li>
-        <header class="coffee__name">Latte</header>
-        <img src="/img/latte.jpg" alt="Latte" />
-        <footer>{{latteCount}} x 777 ₽</footer>
-    </li>
-    <li>
-        <header class="coffee__name">Espresso</header>
-        <img src="/img/espresso.jpg" alt="Espresso" />
-        <footer>{{espressoCount}} x 666 ₽</footer>
-    </li>
+    {{#each items}}
+        <li>
+            <header class="coffee__name">{{name}}</header>
+            <img src="{{image}}" alt="{{name}}">
+            <footer>{{count}} x {{price}} ₽</footer>
+        </li>
+    {{/each}}
 </ul>
