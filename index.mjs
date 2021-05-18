@@ -55,6 +55,8 @@ app.get("/menu", (_, res) => {
 let totalPrice = 0;
 let americanoCount = 0;
 let cappuccinoCount = 0;
+let latteCount = 0;
+let espressoCount = 0;
 
 app.get("/buy/:name", (req, res) => {
   let item = req.url.replace("/buy/", "");
@@ -62,15 +64,21 @@ app.get("/buy/:name", (req, res) => {
     americanoCount+=1;
   } else if (item == "Cappuccino"){
     cappuccinoCount+=1;
+  } else if (item == "Latte"){
+    latteCount+=1
+  } else if (item == "Espresso") {
+    espressoCount += 1;
   }
   res.redirect("/menu")
 });
 
 app.get("/cart", (req, res) => {
   res.render("cart", {
-    totalPrice: 999*(americanoCount+cappuccinoCount),
+    totalPrice: 999*americanoCount+888*cappuccinoCount+777*latteCount+666*espressoCount,
     americanoCount: americanoCount,
     cappuccinoCount: cappuccinoCount,
+    latteCount: latteCount,
+    espressoCount: espressoCount,
     layout: false,
   })
 });
