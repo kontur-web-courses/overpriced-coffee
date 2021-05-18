@@ -35,6 +35,8 @@ app.get("/menu", (_, res) => {
         price: 999,
       },
       { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
+      { name: "Flat-wihie", image: "/static/img/flat-white.jpg", price: 999 },
+      { name: "Espresso", image: "/static/img/espresso.jpg", price: 999 },
     ],
   });
 });
