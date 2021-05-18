@@ -19,9 +19,12 @@ app.engine(
     partialsDir: path.join(rootDir, "/views/partials/"),
   })
 );
+app.use(express.static('.'))
+app.use(express.static('/static'))
 
 app.get("/", (_, res) => {
-  res.sendFile(path.join(rootDir, "/static/html/index.html"));
+  //res.sendFile(path.join(rootDir, "/static/html/index.html"));
+  res.redirect(200, '/menu')
 });
 
 app.get("/menu", (_, res) => {
@@ -34,16 +37,19 @@ app.get("/menu", (_, res) => {
         price: 999,
       },
       { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
+      { name: "Espresso", image: "/static/img/espresso.jpg", price: 100 },
+      { name: "Flat-White", image: "/static/img/flat-white.jpg", price: 999 }
     ],
   });
 });
 
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+  res.render('cart', {items:req.params});
+  res.redirect(200, '/menu')
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  res.render('cart', {layout: "default"});
 });
 
 app.post("/cart", (req, res) => {
@@ -53,5 +59,4 @@ app.post("/cart", (req, res) => {
 app.get("/login", (req, res) => {
   res.status(501).end();
 });
-
 app.listen(port, () => console.log(`App listening on port ${port}`));
