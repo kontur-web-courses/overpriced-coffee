@@ -111,7 +111,14 @@ app.post("/cart", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  if (req.query.username) {
+    res.cookie('username', req.query.username);
+    console.log()
+  }
   res.render("login", {layout: "default"});
+});
+
+app.post("/login", (req, res) => {
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
