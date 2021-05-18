@@ -20,6 +20,8 @@ app.engine(
   })
 );
 
+app.use(cookieParser());
+
 app.use(express.static('static'));
 
 app.get("/", (_, res) => {
@@ -58,6 +60,9 @@ let latteCount = 0;
 let espressoCount = 0;
 
 app.get("/buy/:name", (req, res) => {
+  if (typeof(req.cookies.username) === "undefined") {
+    res.redirect('/login');
+  }
   let item = req.url.replace("/buy/", "");
   if (item === "Americano"){
     americanoCount+=1;
@@ -73,7 +78,10 @@ app.get("/buy/:name", (req, res) => {
 
 app.get("/cart", (req, res) => {
   res.render("cart", {
-    totalPrice: 999*americanoCount+888*cappuccinoCount+777*latteCount+666*espressoCount,
+    totalPrice: 999 * americanoCount
+        + 888 * cappuccinoCount
+        + 777 * latteCount
+        + 666 * espressoCount,
     items: [
       {
         name: "Americano",
@@ -113,12 +121,8 @@ app.post("/cart", (req, res) => {
 app.get("/login", (req, res) => {
   if (req.query.username) {
     res.cookie('username', req.query.username);
-    console.log()
   }
   res.render("login", {layout: "default"});
-});
-
-app.post("/login", (req, res) => {
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
