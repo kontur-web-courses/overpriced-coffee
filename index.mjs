@@ -12,7 +12,6 @@ const app = express();
 // cookie parser
 app.use(cookieParser())
 
-
 // allow static files
 app.use("/static", express.static("static"));
 
@@ -100,24 +99,16 @@ app.get("/buy/:name", (req, res) => {
   if (!carts[username]) {
     carts[username] = [];
   }
-  // totalCard.push(req.params)
   let name = req.params.name;
   let item = items.find(i => i.name == name);
-  // console.log(item);
   if (item != -1) {
     carts[username].push(item);
   }
   res.redirect("/menu");
-  // res.status(501).end();
 });
-
-// app.get("/cart", (req, res) => {
-//   res.status(501).end();
-// });
 
 app.post("/cart", (req, res) => {
   let username = req.cookies.username ?? "Anonim";
-  // carts[username] = [];
   delete carts[username];
   res.redirect("/cart");
 });
