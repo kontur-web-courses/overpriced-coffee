@@ -35,7 +35,19 @@ app.get("/menu", (_, res) => {
         image: "/img/americano.jpg",
         price: 999,
       },
-      { name: "Cappuccino", image: "/img/cappuccino.jpg", price: 999 },
+      { name: "Cappuccino",
+        image: "/img/cappuccino.jpg",
+        price: 888,
+      },
+      {
+        name: "Latte",
+        image: "/img/latte.jpg",
+        price: 777,
+      },
+      { name: "Espresso",
+        image: "/img/espresso.jpg",
+        price: 666,
+      },
     ],
   });
 });
@@ -45,7 +57,7 @@ app.get("/buy/:name", (req, res) => {
 });
 
 app.get("/cart", (req, res) => {
-  res.render("cart", {layout: false})
+  res.render("cart", {layout: false});
 });
 
 app.post("/cart", (req, res) => {
@@ -53,7 +65,7 @@ app.post("/cart", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
+  res.render("login", {layout: false});
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
