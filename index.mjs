@@ -3,10 +3,17 @@ import * as path from "path";
 import hbs from "express-handlebars";
 import cookieParser from "cookie-parser";
 
+
+
 const rootDir = process.cwd();
 const port = 3000;
 const app = express();
 
+// cookie parser
+app.use(cookieParser())
+
+// var cookieParser = require('cookie-parser')
+// app.use(cookieParser())
 // allow static files
 app.use("/static", express.static("static"));
 
@@ -64,7 +71,7 @@ let items = [
 ];
 
 let carts = {
-  "0": []
+  "Anonim": []
 }
 
 app.get("/menu", (_, res) => {
@@ -76,36 +83,71 @@ app.get("/menu", (_, res) => {
 
 
 app.get("/cart", (req, res) => {
+  let username = req.cookies.username ?? "Anonim";
+  if (!carts[username]) {
+    carts[username] = [];
+  }
   res.render("cart", {
     layout: "default",
-    items: carts["0"],
+    items: carts[username],
   });
 });
 
 
-
 app.get("/buy/:name", (req, res) => {
+  let username = req.cookies.username ?? "Anonim";
+  if (!carts[username]) {
+    carts[username] = [];
+  }
   // totalCard.push(req.params)
   let name = req.params.name;
   let item = items.find(i => i.name == name);
-  console.log(item);
+  // console.log(item);
   if (item != -1) {
-    carts["0"].push(item);
+    carts[username].push(item);
   }
   res.redirect("/menu");
   // res.status(501).end();
 });
 
-app.get("/cart", (req, res) => {
-  res.status(501).end();
-});
+// app.get("/cart", (req, res) => {
+//   res.status(501).end();
+// });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  let username = req.cookies.username ?? "Anonim";
+  carts[username] = [];
+  res.redirect("/cart");
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
+  let username = req.cookies.username ?? "Anonim";
+  let newUsername = req.query.username;
+  let currentName = newUsername || username;
+  res.render("login", {
+    layout: "default",
+    username: currentName,
+  });
+
+  if (newUsername) {
+    res.cookie("username", newUsername);
+  }
 });
+
+// app.post("/login", (req, res) => {
+//   console.log("||||||||||||||||||||||||||||||||||||||||||||||||");
+//   console.log(req);
+//   console.log("||||||||||||||||||||||||||||||||||||||||||||||||");
+//   let name = req.params.username;
+//   console.log(name);
+//   res.cookie("username", name);
+//   res.redirect("/login");
+// });
+
+
+
+// app.get("/login", (req, res) => {
+//   res.status(501).end();
+// });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
