@@ -1,5 +1,5 @@
 <section class="cart__total">
-    <div>Итого к оплате: 999999 ₽</div>
+    <div>Итого к оплате: {{summ}} ₽</div>
     <form class="form" method="post">
         <input class="action" type="submit" value="оплатить" />
     </form>
@@ -9,7 +9,7 @@
         <li>
             <header class="coffee__name">{{name}}</header>
             <img src="{{image}}" alt="{{name}}">
-            <footer>999 ₽</footer>
+            <footer> {{price}} ₽</footer>
         </li>
     {{/each}}
 </ul>
