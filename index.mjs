@@ -7,6 +7,9 @@ const rootDir = process.cwd();
 const port = 3000;
 const app = express();
 
+// allow static files
+app.use("/static", express.static("static"));
+
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
 // Настраиваем пути и дефолтный view
@@ -19,6 +22,11 @@ app.engine(
     partialsDir: path.join(rootDir, "/views/partials/"),
   })
 );
+
+// redirect to /menu
+app.get("/", (_, res) => {
+  res.redirect("/menu");
+});
 
 app.get("/", (_, res) => {
   res.sendFile(path.join(rootDir, "/static/html/index.html"));
@@ -34,6 +42,26 @@ app.get("/menu", (_, res) => {
         price: 999,
       },
       { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
+      {
+        name: "Espresso",
+        image: "/static/img/espresso.jpg",
+        price: 999,
+      },
+      {
+        name: "Flat-White",
+        image: "/static/img/flat-white.jpg",
+        price: 999,
+      },
+      {
+        name: "Latte-Macchiato",
+        image: "/static/img/latte-macchiato.jpg",
+        price: 999,
+      },
+      {
+        name: "Latte",
+        image: "/static/img/latte.jpg",
+        price: 999,
+      },
     ],
   });
 });
