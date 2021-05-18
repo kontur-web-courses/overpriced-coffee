@@ -102,9 +102,9 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-        let card = [];
-        let total = 0;
-        let counter = {
+        card = [];
+        total = 0;
+        counter = {
             "Americano": 0, "Cappuccino": 0,
             "Espresso": 0, "Latte": 0
         };
