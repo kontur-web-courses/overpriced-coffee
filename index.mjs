@@ -56,7 +56,28 @@ app.get("/buy/:name", (req, res) => {
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  res.render('cart', {
+    layout: "default",
+    items: [
+      {
+        name: "Americano",
+        image: "/static/img/americano.jpg",
+        price: 999,
+      },
+      { name: "Cappuccino",
+        image: "/static/img/cappuccino.jpg",
+        price: 999
+      },
+      { name: "Espresso",
+        image: "/static/img/espresso.jpg",
+        price: 999
+      },
+      { name: "Latte",
+        image: "/static/img/latte.jpg",
+        price: 999
+      },
+    ],
+  })
 });
 
 app.post("/cart", (req, res) => {
