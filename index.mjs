@@ -12,8 +12,7 @@ const app = express();
 // cookie parser
 app.use(cookieParser())
 
-// var cookieParser = require('cookie-parser')
-// app.use(cookieParser())
+
 // allow static files
 app.use("/static", express.static("static"));
 
@@ -78,6 +77,7 @@ app.get("/menu", (_, res) => {
   res.render("menu", {
     layout: "default",
     items: items,
+    title: "Menu",
   });
 });
 
@@ -90,6 +90,7 @@ app.get("/cart", (req, res) => {
   res.render("cart", {
     layout: "default",
     items: carts[username],
+    title: "Cart",
   });
 });
 
@@ -116,7 +117,8 @@ app.get("/buy/:name", (req, res) => {
 
 app.post("/cart", (req, res) => {
   let username = req.cookies.username ?? "Anonim";
-  carts[username] = [];
+  // carts[username] = [];
+  delete carts[username];
   res.redirect("/cart");
 });
 
@@ -127,6 +129,7 @@ app.get("/login", (req, res) => {
   res.render("login", {
     layout: "default",
     username: currentName,
+    title: "Login",
   });
 
   if (newUsername) {
@@ -134,20 +137,5 @@ app.get("/login", (req, res) => {
   }
 });
 
-// app.post("/login", (req, res) => {
-//   console.log("||||||||||||||||||||||||||||||||||||||||||||||||");
-//   console.log(req);
-//   console.log("||||||||||||||||||||||||||||||||||||||||||||||||");
-//   let name = req.params.username;
-//   console.log(name);
-//   res.cookie("username", name);
-//   res.redirect("/login");
-// });
-
-
-
-// app.get("/login", (req, res) => {
-//   res.status(501).end();
-// });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
