@@ -51,7 +51,8 @@ app.get("/buy/:name", (req, res) => {
 
 app.get("/cart", (req, res) => {
   res.render("cart", {
-    layout: "default"
+    layout: "default",
+    items: cart
   });
 });
 

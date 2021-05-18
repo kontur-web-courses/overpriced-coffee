@@ -4,15 +4,25 @@
     <input class="action" type="submit" value="оплатить" />
   </form>
 </section>
+<!--<ul class="coffee__list">-->
+<!--  <li>-->
+<!--    <header class="coffee__name">Americano</header>-->
+<!--    <img src="/static/img/americano.jpg" alt="Americano" />-->
+<!--    <footer>999 ₽</footer>-->
+<!--  </li>-->
+<!--  <li>-->
+<!--    <header class="coffee__name">Cappuccino</header>-->
+<!--    <img src="/static/img/cappuccino.jpg" alt="Cappuccino" />-->
+<!--    <footer>999 ₽</footer>-->
+<!--  </li>-->
+<!--</ul>-->
+
 <ul class="coffee__list">
-  <li>
-    <header class="coffee__name">Americano</header>
-    <img src="/static/img/americano.jpg" alt="Americano" />
-    <footer>999 ₽</footer>
-  </li>
-  <li>
-    <header class="coffee__name">Cappuccino</header>
-    <img src="/static/img/cappuccino.jpg" alt="Cappuccino" />
-    <footer>999 ₽</footer>
-  </li>
+    {{#each items}}
+        <li>
+            <header class="coffee__name">{{name}}</header>
+            <img src="{{image}}" alt="{{name}}">
+            </a>
+        </li>
+    {{/each}}
 </ul>
