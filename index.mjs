@@ -39,6 +39,34 @@ app.get("/menu", (_, res) => {
   });
 });
 
+app.get("/menu", (_, res) => {
+  res.render("menu", {
+    layout: "default",
+    items: [
+      {
+        name: "latte-macchiato",
+        image: "/static/img/latte-macchiato.jpg",
+        price: 666,
+      },
+      { name: "latte-macchiato", image: "/static/img/latte-macchiato.jpg", price: 666 },
+    ],
+  });
+});
+
+app.get("/menu", (_, res) => {
+  res.render("menu", {
+    layout: "default",
+    items: [
+      {
+        name: "latte-macchiato",
+        image: "/static/img/latte-macchiato.jpg",
+        price: 636,
+      },
+      { name: "latte", image: "/static/img/latte.jpg", price: 636 },
+    ],
+  });
+});
+
 app.get("/buy/:name", (req, res) => {
   res.status(501).end();
 });
