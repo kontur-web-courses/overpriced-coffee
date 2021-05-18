@@ -95,7 +95,7 @@ app.get("/cart", (req, res) => {
       { name: "Espresso",
         image: "/img/espresso.jpg",
         price: 666,
-        count: americanoCount,
+        count: espressoCount,
       },
     ],
     layout: "default",

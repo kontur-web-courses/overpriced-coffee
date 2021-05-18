@@ -6,10 +6,12 @@
 </section>
 <ul class="coffee__list">
     {{#each items}}
-        <li>
-            <header class="coffee__name">{{name}}</header>
-            <img src="{{image}}" alt="{{name}}">
-            <footer>{{count}} x {{price}} ₽</footer>
-        </li>
+        {{#if count}}
+            <li>
+                <header class="coffee__name">{{name}}</header>
+                <img src="{{image}}" alt="{{name}}">
+                <footer>{{count}} x {{price}} ₽</footer>
+            </li>
+        {{/if}}
     {{/each}}
 </ul>
