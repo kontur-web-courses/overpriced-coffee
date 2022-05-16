@@ -33,7 +33,36 @@ app.get("/menu", (_, res) => {
         image: "/static/img/americano.jpg",
         price: 999,
       },
-      { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
+      {
+        name: "Cappuccino",
+        image: "/static/img/cappuccino.jpg",
+        price: 999,
+      },
+      {
+        name: "Latte",
+        image: "/static/img/latte.jpg",
+        price: 9992,
+      },
+      {
+        name: "Espresso",
+        image: "/static/img/espresso.jpg",
+        price: 9991,
+      },
+      {
+        name: "Flat-White",
+        image: "/static/img/flat-white.jpg",
+        price: 9990,
+      },
+      {
+        name: "Latte-Macchiato",
+        image: "/static/img/latte-macchiato.jpg",
+        price: 9999,
+      },
+      {
+        name: "Flag",
+        image: "/static/img/flag.jpg",
+        price: 1e9,
+      },
     ],
   });
 });
