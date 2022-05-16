@@ -6,6 +6,36 @@ import cookieParser from "cookie-parser";
 const rootDir = process.cwd();
 const port = 3000;
 const app = express();
+let sum = 0;
+let cart = [];
+let coffeTypes = {
+  "Americano": {
+    name: "Americano",
+    image: "/static/img/americano.jpg",
+    price: 999,
+  },
+  "Cappuccino": {
+    name: "Cappuccino",
+    image: "/static/img/cappuccino.jpg",
+    price: 999
+  },
+  "Espresso": {
+    name: "Espresso",
+    image: "/static/img/espresso.jpg",
+    price: 999
+  },
+  "Flat-white":{
+    name: "Flat-white", 
+    image: "/static/img/flat-white.jpg",
+    price: 999
+  },
+  "Latte-macchiato": {
+    name: "Latte-macchiato",
+    image: "/static/img/latte-macchiato.jpg",
+    price: 999
+  }
+}
+
 
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
@@ -30,45 +60,34 @@ app.get("/menu", (_, res) => {
   res.render("menu", {
     layout: "default",
     items: [
-      {
-        name: "Americano",
-        image: "/static/img/americano.jpg",
-        price: 999,
-      },
-      {
-        name: "Cappuccino",
-        image: "/static/img/cappuccino.jpg",
-        price: 999
-      },
-      {
-        name: "Espresso",
-        image: "/static/img/espresso.jpg",
-        price: 999
-      },
-      {
-        name: "Flat-white", 
-        image: "/static/img/flat-white.jpg",
-        price: 999
-      },
-      {
-        name: "Latte-macchiato",
-        image: "/static/img/latte-macchiato.jpg",
-        price: 999
-      },
+      coffeTypes["Americano"],
+      coffeTypes["Cappuccino"],
+      coffeTypes["Espresso"],
+      coffeTypes["Flat-white"],
+      coffeTypes["Latte-macchiato"],
     ],
   });
 });
 
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+  let coffe = coffeTypes[req.originalUrl.substring(req.originalUrl.lastIndexOf('/') + 1)];
+  cart.push(coffe);
+  sum += coffe.price;
+  res.redirect('/menu');
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  res.render("cart", {
+    layout: "default",
+    total_price: sum,
+    items: cart
+  });
 });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  sum = 0;
+  cart = [];
+  res.redirect('/cart');
 });
 
 app.get("/login", (req, res) => {
