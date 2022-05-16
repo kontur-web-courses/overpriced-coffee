@@ -7,6 +7,7 @@ const rootDir = process.cwd();
 const port = 3000;
 const app = express();
 
+app.use('/static', express.static('stati;c'))
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
 // Настраиваем пути и дефолтный view
@@ -21,7 +22,7 @@ app.engine(
 );
 
 app.get("/", (_, res) => {
-  res.sendFile(path.join(rootDir, "/static/html/index.html"));
+  res.redirect('/menu');
 });
 
 app.get("/menu", (_, res) => {
@@ -33,17 +34,38 @@ app.get("/menu", (_, res) => {
         image: "/static/img/americano.jpg",
         price: 999,
       },
-      { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
+      { name: "Cappuccino",
+        image: "/static/img/cappuccino.jpg",
+        price: 999
+      },
+      { name: "Espresso",
+        image: "/static/img/espresso.jpg",
+        price: 999
+      },
+      { name: "Latte",
+        image: "/static/img/latte.jpg",
+        price: 999
+      },
     ],
   });
 });
 
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+  let item = req.params.name;
+  items.push(item);
+  res.redirect('/menu');
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  let sum = 0;
+  for (let item of items) {
+    sum += item.price;
+  }
+  res.render("cart", {
+    layout: "default",
+    items: items,
+    sum: sum,
+  });
 });
 
 app.post("/cart", (req, res) => {
@@ -51,7 +73,9 @@ app.post("/cart", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
+  res.render('login', {
+    layout: 'default',
+  });
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
