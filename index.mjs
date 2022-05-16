@@ -95,6 +95,7 @@ app.post("/cart", (req, res) => {
 app.get("/login", (req, res) => {
   res.render('login', {
     layout: "default",
+    title: "Login",
     user: req.query.user || req.cookies.user ||  "ArianaGrande93"
   });
   res.cookie('user', req.query.user || req.cookies.user);
