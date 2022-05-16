@@ -59,13 +59,8 @@ app.get("/", (_, res) => {
 app.get("/menu", (_, res) => {
   res.render("menu", {
     layout: "default",
-    items: [
-      coffeTypes["Americano"],
-      coffeTypes["Cappuccino"],
-      coffeTypes["Espresso"],
-      coffeTypes["Flat-white"],
-      coffeTypes["Latte-macchiato"],
-    ],
+    title: "Menu",
+    items: Object.values(coffeTypes),
   });
 });
 
@@ -79,6 +74,7 @@ app.get("/buy/:name", (req, res) => {
 app.get("/cart", (req, res) => {
   res.render("cart", {
     layout: "default",
+    title: "Cart",
     total_price: sum,
     items: cart
   });
