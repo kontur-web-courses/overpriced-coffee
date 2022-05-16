@@ -81,9 +81,6 @@ let ordered_coffee = {};
 app.get("/buy/:name", (req, res) => {
   const userName = req.cookies.name;
   let user_cart = ordered_coffee[userName];
-  if (!user_cart) {
-    ordered_coffee[userName] = [];
-  }
 
   let new_coffee = { ...(coffee.find(item => item.name === req.params.name)) };
   let identic_coffee = user_cart.find(item => item.name === req.params.name);
@@ -100,9 +97,6 @@ app.get("/buy/:name", (req, res) => {
 app.get("/cart", (req, res) => {
   const userName = req.cookies.name;
   let user_cart = ordered_coffee[userName];
-  if (!user_cart) {
-    ordered_coffee[userName] = [];
-  }
 
   res.render("cart", {
     layout: "default",
@@ -124,10 +118,10 @@ app.get("/login", (req, res) => {
   } else if (req.cookies.name) {
     userName = req.cookies.name;
   }
-  //
-  // if (userName && !ordered_coffee[userName]) {
-  //   ordered_coffee[userName] = [];
-  // }
+
+  if (userName && !ordered_coffee[userName]) {
+    ordered_coffee[userName] = [];
+  }
 
   res.render("login", {
     layout: "default",
