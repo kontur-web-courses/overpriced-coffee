@@ -36,6 +36,7 @@ app.get("/menu", (req, res) => {
     res.cookie('cart', req.cookies.cart);
   }
   res.render("menu", {
+    title: "Меню",
     layout: "default",
     items: [
       {
@@ -74,6 +75,7 @@ app.get("/cart", (req, res) => {
     prices.push(order.price);
   }
   res.render("cart", {
+    title: "Корзина",
     layout: "default",
     total_price: prices.reduce((a, b) => a + b, 0),
     items: cart,
@@ -90,7 +92,9 @@ app.get("/login", (req, res) => {
   res
     .cookie('username', req.query.username)
     .render('login', {
-    layout: "default", username: req.cookies.username,
+      title: "Регистрация",
+      layout: "default",
+      username: req.cookies.username,
   });
 });
 
