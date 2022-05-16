@@ -7,8 +7,11 @@ const rootDir = process.cwd();
 const port = 3000;
 const app = express();
 
+app.use('/static', express.static('static'));
+app.use(cookieParser());
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
+
 // Настраиваем пути и дефолтный view
 app.engine(
   "hbs",
@@ -20,38 +23,74 @@ app.engine(
   })
 );
 
-app.get("/", (_, res) => {
-  res.sendFile(path.join(rootDir, "/static/html/index.html"));
+app.get("/", (req, res) => {
+  res.redirect("/menu")
 });
-
-app.get("/menu", (_, res) => {
-  res.render("menu", {
-    layout: "default",
-    items: [
+const coffee = [
       {
         name: "Americano",
         image: "/static/img/americano.jpg",
-        price: 999,
+        price: 220,
       },
-      { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
-    ],
+      {
+        name: "Cappuccino",
+        image: "/static/img/cappuccino.jpg",
+        price: 289,
+      },
+      {
+        name: "Latte",
+        image: "/static/img/latte.jpg",
+        price: 310,
+      },
+      {
+        name: "Espresso",
+        image: "/static/img/espresso.jpg",
+        price: 240,
+      },
+    ];
+app.get("/menu", (_, res) => {
+  res.render("menu", {
+    layout: "default",
+    items: coffee,
   });
 });
 
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+  let carts = req.cookies.cart ? req.cookies.cart : [];
+  carts.push(req.params.name);
+  res.cookie('cart', carts);
+  res.redirect("/menu");
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  let carts = req.cookies.cart ? req.cookies.cart : [];
+  const cart = carts.map(element => coffee.find(coffee => coffee.name === element));
+  res.render('cart', {
+    layout: 'default',
+    fullPrice: cart.reduce((sum, val) => val.price + sum, 0),
+    items: cart
+  });
 });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  res.cookie('cart', []);
+  res.redirect('/menu');
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
+  let userName;
+  if (req.query.username) {
+    userName = req.query.username;
+  } else if (req.cookies.username) {
+    userName = req.cookies.username;
+  } else {
+    userName = "NoName";
+  }
+  res.cookie("username", userName);
+  res.render('login', {
+    layout: 'default',
+    username: userName
+  });
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
