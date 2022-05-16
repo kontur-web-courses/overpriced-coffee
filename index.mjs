@@ -77,7 +77,18 @@ let ordered_coffee = [];
 app.get("/buy/:name", (req, res) => {
 
   let new_coffee = { ...(coffee.find(item => item.name === req.params.name)) };
+
+  let index = ordered_coffee.indexOf(new_coffee);
+
   ordered_coffee.push(new_coffee);
+  // if (index === -1) {
+  //   ordered_coffee.push(new_coffee);
+  //   console.log('new');
+  // }
+  // else {
+  //   ordered_coffee[index].price += new_coffee.price;
+  //   console.log('old');
+  // }
 
   res.redirect("/menu");
 });
@@ -91,7 +102,8 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  ordered_coffee = [];
+  res.redirect('/cart');
 });
 
 app.get("/login", (req, res) => {
