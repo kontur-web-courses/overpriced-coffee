@@ -76,32 +76,38 @@ app.get("/menu", (_, res) => {
   });
 });
 
-let ordered_coffee = [];
+let ordered_coffee = {};
 
 app.get("/buy/:name", (req, res) => {
+  const userName = req.cookies.name;
+  let user_cart = ordered_coffee[userName];
+  if (!user_cart) {
+    ordered_coffee[userName] = [];
+  }
 
   let new_coffee = { ...(coffee.find(item => item.name === req.params.name)) };
+  let identic_coffee = user_cart.find(item => item.name === req.params.name);
 
-  let index = ordered_coffee.indexOf(new_coffee);
-
-  ordered_coffee.push(new_coffee);
-  // if (index === -1) {
-  //   ordered_coffee.push(new_coffee);
-  //   console.log('new');
-  // }
-  // else {
-  //   ordered_coffee[index].price += new_coffee.price;
-  //   console.log('old');
-  // }
+  if (!identic_coffee) {
+    user_cart.push(new_coffee);
+  } else {
+    identic_coffee.price += new_coffee.price;
+  }
 
   res.redirect("/menu");
 });
 
 app.get("/cart", (req, res) => {
+  const userName = req.cookies.name;
+  let user_cart = ordered_coffee[userName];
+  if (!user_cart) {
+    ordered_coffee[userName] = [];
+  }
+
   res.render("cart", {
     layout: "default",
-    items: ordered_coffee,
-    sum: ordered_coffee.reduce((sum, coffee) => sum + coffee.price, 0),
+    sum: user_cart.reduce((sum, coffee) => sum + coffee.price, 0),
+    items: user_cart
   });
 });
 
