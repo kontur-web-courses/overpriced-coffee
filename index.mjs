@@ -73,6 +73,7 @@ app.get("/menu", (_, res) => {
   res.render("menu", {
     layout: "default",
     items: coffee,
+    title: "Меню"
   });
 });
 
@@ -101,12 +102,15 @@ app.get("/cart", (req, res) => {
   res.render("cart", {
     layout: "default",
     sum: user_cart.reduce((sum, coffee) => sum + coffee.price, 0),
-    items: user_cart
+    items: user_cart,
+    title: "Корзина"
   });
 });
 
 app.post("/cart", (req, res) => {
-  ordered_coffee = [];
+  const userName = req.cookies.name;
+  ordered_coffee[userName] = [];
+  // ordered_coffee = ;
   res.redirect('/cart');
 });
 
@@ -126,6 +130,7 @@ app.get("/login", (req, res) => {
   res.render("login", {
     layout: "default",
     username: userName || "Аноним",
+    title: "Личный кабинет"
   })
 });
 
