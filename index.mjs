@@ -56,4 +56,8 @@ app.get("/login", (req, res) => {
 
 app.use('/static', express.static('static'))
 
+app.get('/', (req, res) => {
+  res.redirect('/menu')
+})
+
 app.listen(port, () => console.log(`App listening on port ${port}`));
