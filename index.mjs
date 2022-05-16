@@ -43,6 +43,7 @@ const coffee = [
     price: 1e9,
   },
 ];
+let history = {};
 
 // Выбираем в качестве движка шаблонов Handlebars
 app.set("view engine", "hbs");
@@ -84,13 +85,13 @@ app.get("/buy/:name", (req, res) => {
   let user_cart = ordered_coffee[userName];
 
   let new_coffee = { ...(coffee.find(item => item.name === req.params.name)) };
-  let identic_coffee = user_cart.find(item => item.name === req.params.name);
-
-  if (!identic_coffee) {
+  // let identic_coffee = user_cart.find(item => item.name === req.params.name);
+  //
+  // if (!identic_coffee) {
     user_cart.push(new_coffee);
-  } else {
-    identic_coffee.price += new_coffee.price;
-  }
+  // } else {
+  //   identic_coffee.price += new_coffee.price;
+  // }
 
   res.redirect("/menu");
 });
@@ -109,8 +110,17 @@ app.get("/cart", (req, res) => {
 
 app.post("/cart", (req, res) => {
   const userName = req.cookies.name;
+  if (!history[userName]){
+    history[userName] = [];
+  }
+  ordered_coffee[userName].forEach(element => {
+    let coffee = history[userName].find(coffee => coffee.name === element.name);
+    if (!coffee)
+      history[userName].push({name: element.name, countOfCoffee: 1});
+    else
+      coffee.countOfCoffee += 1;
+  });
   ordered_coffee[userName] = [];
-  // ordered_coffee = ;
   res.redirect('/cart');
 });
 
@@ -133,5 +143,14 @@ app.get("/login", (req, res) => {
     title: "Личный кабинет"
   })
 });
+
+app.get("/history", (req, res) => {
+  const userName = req.cookies.name;
+  res.render("history",{
+    layout: "default",
+    items: history[userName],
+    title: "История покупок",
+  });
+})
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
