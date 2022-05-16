@@ -51,6 +51,7 @@ app.engine(
 );
 
 app.use('/static', express.static('static'));
+app.use(cookieParser());
 
 app.get("/", (_, res) => {
   res.redirect('/menu');
@@ -87,7 +88,11 @@ app.post("/cart", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
+  res.render('login', {
+    layout: "default",
+    user: req.cookies.user || req.query.user || "ArianaGrande93"
+  });
+  res.cookie('user', req.query.user || req.cookies.user);
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
