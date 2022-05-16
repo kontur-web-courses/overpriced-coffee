@@ -57,6 +57,10 @@ app.engine(
   })
 );
 
+app.use(cookieParser());
+
+app.use('/static', express.static('static'));
+
 app.get('/', (req, res) => {
   res.redirect('/menu')
 })
@@ -107,9 +111,22 @@ app.post("/cart", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
-});
+  let userName;
+  if (req.query.username) {
+    userName = req.query.username;
+    res.cookie("name", userName);
+  } else if (req.cookies.name) {
+    userName = req.cookies.name;
+  }
+  //
+  // if (userName && !ordered_coffee[userName]) {
+  //   ordered_coffee[userName] = [];
+  // }
 
-app.use('/static', express.static('static'))
+  res.render("login", {
+    layout: "default",
+    username: userName || "Аноним",
+  })
+});
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
