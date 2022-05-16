@@ -4,54 +4,100 @@ import hbs from "express-handlebars";
 import cookieParser from "cookie-parser";
 
 const rootDir = process.cwd();
-const port = 3000;
+const port = 3001;
+
+const coffees = {
+  americano: {
+    name: "Americano",
+    image: "/static/img/americano.jpg",
+    price: 999
+  },
+  cappuccino: {
+    name: "Cappuccino",
+    image: "/static/img/cappuccino.jpg",
+    price: 999
+  },
+  latte: {
+    name: "Latte",
+    image: "/static/img/latte.jpg",
+    price: 1337
+  }
+};
+
+const cart = {};
+
 const app = express();
 
-// Выбираем в качестве движка шаблонов Handlebars
+app.use(express.static("."));
+app.use(cookieParser());
+
 app.set("view engine", "hbs");
-// Настраиваем пути и дефолтный view
 app.engine(
   "hbs",
   hbs({
     extname: "hbs",
     defaultView: "default",
     layoutsDir: path.join(rootDir, "/views/layouts/"),
-    partialsDir: path.join(rootDir, "/views/partials/"),
+    partialsDir: path.join(rootDir, "/views/partials/")
   })
 );
 
-app.get("/", (_, res) => {
-  res.sendFile(path.join(rootDir, "/static/html/index.html"));
-});
+app.get("/", (_, res) => res.redirect("menu"));
 
 app.get("/menu", (_, res) => {
   res.render("menu", {
     layout: "default",
-    items: [
-      {
-        name: "Americano",
-        image: "/static/img/americano.jpg",
-        price: 999,
-      },
-      { name: "Cappuccino", image: "/static/img/cappuccino.jpg", price: 999 },
-    ],
+    items: Object.values(coffees),
+    title: "Меню"
   });
 });
 
 app.get("/buy/:name", (req, res) => {
-  res.status(501).end();
+  const username = req.cookies.username || "Аноним";
+
+  if (!(username in cart)) {
+    cart[username] = [];
+  }
+
+  cart[username].push(coffees[req.params.name.toLowerCase()]);
+  res.redirect("/menu");
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  const username = req.cookies.username || "Аноним";
+
+  res.render("cart", {
+    layout: "default",
+    items: cart[username] || [],
+    title: "Корзина",
+    helpers: {
+      getTotalPrice(cart) {
+        return cart.reduce(function(a, b) {
+          return a + b.price;
+        }, 0);
+      }
+    }
+  });
 });
 
 app.post("/cart", (req, res) => {
-  res.status(501).end();
+  const username = req.cookies.username || "Аноним";
+  cart[username] = [];
+  res.redirect("menu");
 });
 
 app.get("/login", (req, res) => {
-  res.status(501).end();
+  const oldName = req.cookies.username;
+  const newName = req.query.username;
+  res.cookie("name", newName);
+  cart[newName] = [...(cart[oldName] || [])];
+  delete cart[oldName];
+
+  res.render("login", {
+    layout: "default",
+    title: "Личный кабинет",
+    username: newName
+  });
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
