@@ -54,4 +54,6 @@ app.get("/login", (req, res) => {
   res.status(501).end();
 });
 
+app.use('/static', express.static('static'))
+
 app.listen(port, () => console.log(`App listening on port ${port}`));
