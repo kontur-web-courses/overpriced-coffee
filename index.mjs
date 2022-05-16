@@ -41,8 +41,18 @@ app.get("/menu", (_, res) => {
         price: 999
       },
       {
-        name: "Cappuccino",
-        image: "/static/img/cappuccino.jpg",
+        name: "Espresso",
+        image: "/static/img/espresso.jpg",
+        price: 999
+      },
+      {
+        name: "Flat-white", 
+        image: "/static/img/flat-white.jpg",
+        price: 999
+      },
+      {
+        name: "Latte-macchiato",
+        image: "/static/img/latte-macchiato.jpg",
         price: 999
       },
     ],
