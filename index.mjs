@@ -70,11 +70,12 @@ app.get("/", (_, res) => {
   res.sendFile(path.join(rootDir, "/static/html/index.html"));
 });
 
-app.get("/menu", (_, res) => {
+app.get("/menu", (req, res) => {
   res.render("menu", {
     layout: "default",
     items: coffee,
-    title: "Меню"
+    title: "Меню",
+    theme: (req.cookies.theme === "true" ?? false) ? "checked" : "",
   });
 });
 
@@ -104,7 +105,8 @@ app.get("/cart", (req, res) => {
     layout: "default",
     sum: user_cart.reduce((sum, coffee) => sum + coffee.price, 0),
     items: user_cart,
-    title: "Корзина"
+    title: "Корзина",
+    theme: (req.cookies.theme === "true" ?? false) ? "checked" : "",
   });
 });
 
@@ -112,6 +114,9 @@ app.post("/cart", (req, res) => {
   const userName = req.cookies.name;
   if (!history[userName]){
     history[userName] = [];
+  }
+  if (!ordered_coffee[userName]) {
+    ordered_coffee[userName] = [];
   }
   ordered_coffee[userName].forEach(element => {
     let coffee = history[userName].find(coffee => coffee.name === element.name);
@@ -133,14 +138,15 @@ app.get("/login", (req, res) => {
     userName = req.cookies.name;
   }
 
-  if (userName && !ordered_coffee[userName]) {
+  if (!ordered_coffee[userName]) {
     ordered_coffee[userName] = [];
   }
 
   res.render("login", {
     layout: "default",
     username: userName || "Аноним",
-    title: "Личный кабинет"
+    title: "Личный кабинет",
+    theme: (req.cookies.theme === "true" ?? false) ? "checked" : "",
   })
 });
 
@@ -150,6 +156,7 @@ app.get("/history", (req, res) => {
     layout: "default",
     items: history[userName],
     title: "История покупок",
+    theme: (req.cookies.theme === "true" ?? false) ? "checked" : "",
   });
 })
 
