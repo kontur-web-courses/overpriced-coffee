@@ -72,7 +72,7 @@ app.get("/buy/:name", (req, res) => {
 });
 
 app.get("/cart", (req, res) => {
-  res.status(501).end();
+  res.sendFile(path.join(rootDir, "/static/html/cart.html"));
 });
 
 app.post("/cart", (req, res) => {
