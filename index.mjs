@@ -6,8 +6,13 @@ import cookieParser from "cookie-parser";
 const rootDir = process.cwd();
 const port = 3000;
 const app = express();
-let sum = 0;
-let cart = [];
+let currentUser =  "ArianaGrande93";
+let sums = {
+  "ArianaGrande93": 0
+};
+let carts ={
+  "ArianaGrande93": []
+};
 let coffeTypes = {
   "Americano": {
     name: "Americano",
@@ -67,8 +72,8 @@ app.get("/menu", (_, res) => {
 
 app.get("/buy/:name", (req, res) => {
   let coffe = coffeTypes[req.originalUrl.substring(req.originalUrl.lastIndexOf('/') + 1)];
-  cart.push(coffe);
-  sum += coffe.price;
+  carts[currentUser].push(coffe);
+  sums[currentUser] += coffe.price;
   res.redirect('/menu');
 });
 
@@ -76,23 +81,28 @@ app.get("/cart", (req, res) => {
   res.render("cart", {
     layout: "default",
     title: "Cart",
-    total_price: sum,
-    items: cart
+    total_price: sums[currentUser],
+    items: carts[currentUser]
   });
 });
 
 app.post("/cart", (req, res) => {
-  sum = 0;
-  cart = [];
+  sums[currentUser] = 0;
+  carts[currentUser] = [];
   res.redirect('/cart');
 });
 
 app.get("/login", (req, res) => {
   res.render('login', {
     layout: "default",
-    user: req.cookies.user || req.query.user || "ArianaGrande93"
+    user: req.query.user || req.cookies.user ||  "ArianaGrande93"
   });
   res.cookie('user', req.query.user || req.cookies.user);
+  currentUser = req.query.user || req.cookies.user ||  "ArianaGrande93";
+  if(!carts.hasOwnProperty(currentUser)){
+    carts[currentUser] = []
+    sums[currentUser] = 0
+  }
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
